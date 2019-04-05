@@ -45,7 +45,7 @@ public class UserController {
         return "redirect:/list";
     }
 
-    @GetMapping("/user/updateForm")
+    @GetMapping("user/updateForm")
     public String showFormForUpdate(@RequestParam("userId") int theId,
                                     Model theModel) {
         User theUser = userService.getUser(theId);
