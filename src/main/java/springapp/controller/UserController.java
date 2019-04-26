@@ -1,5 +1,6 @@
 package springapp.controller;
 
+import org.springframework.web.servlet.ModelAndView;
 import springapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,17 @@ public class UserController {
 //        return "redirect:/list";
 //    }
 
+//    @GetMapping("/list")
+//    public String listUsers(Model theModel) {
+//        List<User> theUsers = userService.getUsers();
+//        theModel.addAttribute("users", theUsers);
+//        return "user-list";
+//    }
+
     @GetMapping("/list")
-    public String listUsers(Model theModel) {
+    public ModelAndView listUsers() {
         List<User> theUsers = userService.getUsers();
-        theModel.addAttribute("users", theUsers);
-        return "user-list";
+        return new ModelAndView("user-list", "users", theUsers);
     }
 
     @GetMapping("/showForm")
