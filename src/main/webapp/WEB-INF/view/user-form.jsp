@@ -54,6 +54,9 @@
                     <div class="form-group">
                         <label for="role" class="col-md-3 control-label">Role</label>
                         <div class="col-md-9">
+                            <%--<select path="role" id="role" cssClass="form-control" />--%>
+                            <%--<option>user</option><option>admin</option>--%>
+                            <%--</select>--%>
                             <form:input path="role" cssClass="form-control" />
                         </div>
                     </div>

@@ -10,7 +10,7 @@ import springapp.service.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+//@RequestMapping()
 public class UserController {
 
     private final UserService userService;
@@ -20,16 +20,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String firstPage(Model theModel) {
-        return "redirect:/list";
-    }
+//    @GetMapping("/")
+//    public String firstPage(Model theModel) {
+//        return "redirect:/list";
+//    }
 
     @GetMapping("/list")
     public String listUsers(Model theModel) {
         List<User> theUsers = userService.getUsers();
         theModel.addAttribute("users", theUsers);
-        return "/user-list";
+        return "user-list";
     }
 
     @GetMapping("/showForm")
@@ -45,7 +45,7 @@ public class UserController {
         return "redirect:/list";
     }
 
-    @GetMapping("user/updateForm")
+    @GetMapping("updateForm")
     public String showFormForUpdate(@RequestParam("userId") int theId,
                                     Model theModel) {
         User theUser = userService.getUser(theId);
