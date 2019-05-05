@@ -71,4 +71,15 @@ public class User {
         return "User [id = " + id + ", Name = " + name + ", Login = " + login + ", Password = " + password + "]";
     }
 
+    public boolean updateUser(User newUser) {
+        if (id != newUser.getId()) {
+            return false;
+        }
+        this.login = newUser.getLogin();
+        this.name = newUser.getName();
+        this.password = newUser.getPassword();
+        this.role = newUser.getRole();
+        return true;
+    }
+
 }

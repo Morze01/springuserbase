@@ -16,44 +16,44 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl {//implements UserDAO {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public UserDAOImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    @Override
-    public List <User> getUsers() {
-        Session session = sessionFactory.getCurrentSession();
-
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery < User > cq = cb.createQuery(User.class);
-        Root < User > root = cq.from(User.class);
-        cq.select(root);
-        Query query = session.createQuery(cq);
-        return query.getResultList();
-    }
-
-    @Override
-    public void deleteUser(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        User book = session.byId(User.class).load(id);
-        session.delete(book);
-    }
-
-    @Override
-    public void saveUser(User theUser) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(theUser);
-    }
-
-    @Override
-    public User getUser(int theId) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        User theUser = currentSession.get(User.class, theId);
-        return theUser;
-    }
+//    private final SessionFactory sessionFactory;
+//
+//    @Autowired
+//    public UserDAOImpl(SessionFactory sessionFactory) {
+//        this.sessionFactory = sessionFactory;
+//    }
+//
+//    @Override
+//    public List <User> getUsers() {
+//        Session session = sessionFactory.getCurrentSession();
+//
+//        CriteriaBuilder cb = session.getCriteriaBuilder();
+//        CriteriaQuery < User > cq = cb.createQuery(User.class);
+//        Root < User > root = cq.from(User.class);
+//        cq.select(root);
+//        Query query = session.createQuery(cq);
+//        return query.getResultList();
+//    }
+//
+//    @Override
+//    public void deleteUser(int id) {
+//        Session session = sessionFactory.getCurrentSession();
+//        User book = session.byId(User.class).load(id);
+//        session.delete(book);
+//    }
+//
+//    @Override
+//    public void saveUser(User theUser) {
+//        Session currentSession = sessionFactory.getCurrentSession();
+//        currentSession.saveOrUpdate(theUser);
+//    }
+//
+//    @Override
+//    public User getUser(int theId) {
+//        Session currentSession = sessionFactory.getCurrentSession();
+//        User theUser = currentSession.get(User.class, theId);
+//        return theUser;
+//    }
 }
