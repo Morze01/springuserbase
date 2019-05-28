@@ -1,6 +1,9 @@
 package springapp.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import springapp.model.User;
 
@@ -9,12 +12,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Component
+@Repository
 @Transactional
 public class JpaUserDAOImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+//    @Autowired
+//    private InitialDataLoader initialDataLoader;
+//
+//    public JpaUserDAOImpl() {
+//        System.out.println("User DAO initialisation");
+//    }
 
     @Override
     @Transactional (readOnly = true)
@@ -50,4 +60,10 @@ public class JpaUserDAOImpl implements UserDAO {
         User persistUser = entityManager.find(User.class,user.getId());
         persistUser.updateUser(user);
     }
+
+    @Override
+    public User findByLogin(String login) {
+        return entityManager.createQuery("select u from User u where u.login=:Login", User.class).setParameter("Login",login).getResultList().stream().findAny().orElse(null);
+    }
+
 }

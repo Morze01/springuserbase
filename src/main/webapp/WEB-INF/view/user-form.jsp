@@ -58,6 +58,10 @@
                             <%--<option>user</option><option>admin</option>--%>
                             <%--</select>--%>
                             <form:input path="role" cssClass="form-control" />
+                                <select class="form-control" id="role" rows="2" name="role">
+                                    <option>user</option>
+                                    <option>admin</option>
+                                </select>
                         </div>
                     </div>
 

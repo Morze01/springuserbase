@@ -1,13 +1,14 @@
 package springapp.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import springapp.config.security.WebSecurityConfig;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class < ? > [] getRootConfigClasses() {
         return new Class[] {
-                AppContext.class,WebMvcConfig.class
+                AppContext.class,WebMvcConfig.class,WebSecurityConfig.class
         };
         //return null;
     }

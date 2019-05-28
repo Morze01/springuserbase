@@ -1,10 +1,15 @@
 package springapp.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +28,42 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @JoinTable(name = "USERS_ROLE",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
+    private Set<Role> roleSet = new HashSet<>();
+
+
     public User() {
+    }
+
+    public User (String name, String pass, String login, String role) {
+        this.name = name;
+        this.password = pass;
+        this.login = login;
+        this.role = role;
+    }
+
+
+    public Set<Role> getRoleSet() {
+        return roleSet;
+    }
+
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
+    }
+
+    public void addRoleToUser (Role role) {
+        if (!this.roleSet.contains(role)) {
+            this.roleSet.add(role);
+        }
+    }
+
+    public void removeRoleFromUser (Role role) {
+        if (this.roleSet.contains(role)) {
+            this.roleSet.remove(role);
+        }
     }
 
     public int getId() {
@@ -42,9 +82,42 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roleSet;
+    }
+
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+
+
 
     public void setPassword(String password) {
         this.password = password;

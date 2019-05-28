@@ -33,6 +33,16 @@ public class UserController {
 //        return "user-list";
 //    }
 
+    @GetMapping ("/login")
+    public String authorize() {
+        return "/login";
+    }
+
+    @GetMapping("/home")
+    public ModelAndView homePage() {
+        return new ModelAndView("home", "hello", "Hello!");
+    }
+
     @GetMapping("/list")
     public ModelAndView listUsers() {
         List<User> theUsers = userService.getUsers();

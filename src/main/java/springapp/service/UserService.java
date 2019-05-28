@@ -13,4 +13,6 @@ public interface UserService {
     public User getUser(int theId);
 
     public void deleteUser(int theId);
+
+    public User findByLogin(String login);
 }

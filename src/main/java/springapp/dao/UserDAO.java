@@ -15,4 +15,6 @@ public interface UserDAO {
     public void deleteUser(int theId);
 
     public void updateUser(User user);
+
+    public User findByLogin(String login);
 }

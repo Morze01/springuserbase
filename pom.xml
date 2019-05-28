@@ -22,6 +22,8 @@
         <servlets.version>3.1.0</servlets.version>
         <jsp.version>2.3.1</jsp.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
+        <spring-security.version>5.0.6.RELEASE</spring-security.version>
+        <spring.version>5.0.6.RELEASE</spring.version>
     </properties>
     <dependencies>
         <!-- Spring MVC Dependency -->
@@ -76,6 +78,17 @@
             <version>2.1.5.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
