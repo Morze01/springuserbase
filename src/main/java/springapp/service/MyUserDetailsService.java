@@ -18,6 +18,7 @@ public class MyUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByLogin(username);
@@ -26,4 +27,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         return user;
     }
+
+
 }

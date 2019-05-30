@@ -38,6 +38,12 @@ public class UserController {
         return "/login";
     }
 
+    @RequestMapping(value = "/loginFailed", method = RequestMethod.GET)
+    public String loginError(Model model) {
+        model.addAttribute("error", "true");
+        return "login";
+    }
+
     @GetMapping("/home")
     public ModelAndView homePage() {
         return new ModelAndView("home", "hello", "Hello!");

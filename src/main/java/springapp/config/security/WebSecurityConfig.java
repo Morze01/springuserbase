@@ -3,13 +3,14 @@ package springapp.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import springapp.service.MyUserDetailsService;
 
 @Configuration
@@ -41,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/home","/login").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/list").access("hasRole ('ADMIN')")
+                .antMatchers("/list").access("hasRole ('ADMIN')")//todo hasany aut
                 .antMatchers("/home").access("hasAnyRole ('ADMIN','USER')")
                 //.antMatchers("/login").permitAll()
 //                .anyRequest()
@@ -51,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                //.successHandler()
+                .successHandler(myAuthenticationSuccessHandler()) //todo falure handler
+                .failureHandler(myAuthenticationFailureHandler())
                 .and()
                 .logout().logoutSuccessUrl("/login")
                 ;
@@ -61,5 +63,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MyUrlAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler myAuthenticationFailureHandler(){
+        return new MyAuthenticationFailureHandler();
     }
 }

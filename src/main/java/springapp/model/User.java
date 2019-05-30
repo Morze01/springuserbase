@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -22,13 +23,14 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
     @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "role")
     private String role;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Role.class)
     @JoinTable(name = "USERS_ROLE",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
@@ -84,7 +86,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleSet;
+        return roleSet.stream().map(role1 -> new SimpleGrantedAuthority(role1.getName())).collect(Collectors.toList());
     }
 
     public String getPassword() {
