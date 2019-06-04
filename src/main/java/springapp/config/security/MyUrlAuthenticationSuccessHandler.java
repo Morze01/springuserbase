@@ -18,32 +18,35 @@ import java.util.Collection;
 public class MyUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     //protected final Log logger = LogFactory.getLog(this.getClass());
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    public MyUrlAuthenticationSuccessHandler() {
-        super();
-    }
 
-    // API
-
+//    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+//
+//    public MyUrlAuthenticationSuccessHandler() {
+//        super();
+//    }
+//
+//    // API
+//
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-        handle(request, response, authentication);
-        clearAuthenticationAttributes(request);
+
+//        handle(request, response, authentication);
+//        clearAuthenticationAttributes(request);
     }
-
-    // IMPL
-
-    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-        final String targetUrl = determineTargetUrl(authentication);
-
-        if (response.isCommitted()) {
-            //logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
-
-        redirectStrategy.sendRedirect(request, response, targetUrl);
-    }
+//
+//    // IMPL
+//
+//    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+//        final String targetUrl = determineTargetUrl(authentication);
+//
+//        if (response.isCommitted()) {
+//            //logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+//            return;
+//        }
+//
+//        redirectStrategy.sendRedirect(request, response, targetUrl);
+//    }
 
     protected String determineTargetUrl(final Authentication authentication) {
         boolean isUser = false;
@@ -68,26 +71,26 @@ public class MyUrlAuthenticationSuccessHandler implements AuthenticationSuccessH
         }
     }
 
-    /**
-     * Removes temporary authentication-related data which may have been stored in the session
-     * during the authentication process.
-     */
-    protected final void clearAuthenticationAttributes(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            return;
-        }
-
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }
-
-    public void setRedirectStrategy(final RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }
-
-    protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
-    }
+//    /**
+//     * Removes temporary authentication-related data which may have been stored in the session
+//     * during the authentication process.
+//     */
+//    protected final void clearAuthenticationAttributes(final HttpServletRequest request) {
+//        final HttpSession session = request.getSession(false);
+//
+//        if (session == null) {
+//            return;
+//        }
+//
+//        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+//    }
+//
+//    public void setRedirectStrategy(final RedirectStrategy redirectStrategy) {
+//        this.redirectStrategy = redirectStrategy;
+//    }
+//
+//    protected RedirectStrategy getRedirectStrategy() {
+//        return redirectStrategy;
+//    }
 
 }

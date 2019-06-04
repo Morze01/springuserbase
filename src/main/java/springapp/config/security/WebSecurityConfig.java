@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -19,6 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private SuccessHandler successHandler;
 
 //    @Bean
 //    public DaoAuthenticationProvider authenticationProvider() {
@@ -33,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
+        //.passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -40,20 +45,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/home","/login").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/list").access("hasRole ('ADMIN')")//todo hasany aut
-                .antMatchers("/home").access("hasAnyRole ('ADMIN','USER')")
-                //.antMatchers("/login").permitAll()
-//                .anyRequest()
-//                .authenticated()
+                .antMatchers("/list").access("hasRole ('ADMIN')")//access("hasRole ('ADMIN')")//todo hasany aut
+                .antMatchers("/home").access("hasAnyRole ('ADMIN','USER')")//access("hasAnyRole ('ADMIN','USER')")
+                .antMatchers("/register").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .usernameParameter("login")
+                .usernameParameter("username")
                 .passwordParameter("password")
-                .successHandler(myAuthenticationSuccessHandler()) //todo falure handler
-                .failureHandler(myAuthenticationFailureHandler())
+                .successHandler(successHandler) //todo falure handler
+                //.failureHandler(myAuthenticationFailureHandler())
                 .and()
                 .logout().logoutSuccessUrl("/login")
                 ;
@@ -62,12 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-        return new MyUrlAuthenticationSuccessHandler();
+        return NoOpPasswordEncoder.getInstance();
+       // return new BCryptPasswordEncoder();
     }
 
     @Bean

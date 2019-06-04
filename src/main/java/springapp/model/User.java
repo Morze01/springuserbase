@@ -1,5 +1,8 @@
 package springapp.model;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +13,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
+//@NoArgsConstructor(force=true)
+//@RequiredArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -23,6 +28,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Column(name = "login", unique = true)
     private String login;
@@ -30,11 +37,12 @@ public class User implements UserDetails {
     @Column(name = "role")
     private String role;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Role.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class) //cascade = CascadeType.ALL,
     @JoinTable(name = "USERS_ROLE",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "id")})
     private Set<Role> roleSet = new HashSet<>();
+
 
 
     public User() {
@@ -45,6 +53,7 @@ public class User implements UserDetails {
         this.password = pass;
         this.login = login;
         this.role = role;
+        this.enabled = true;
     }
 
 
@@ -84,6 +93,7 @@ public class User implements UserDetails {
         this.name = name;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roleSet.stream().map(role1 -> new SimpleGrantedAuthority(role1.getName())).collect(Collectors.toList());
@@ -95,27 +105,27 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return login;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
 
@@ -141,6 +151,13 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean getEnabled () {return enabled;}
+
+
     @Override
     public String toString() {
         return "User [id = " + id + ", Name = " + name + ", Login = " + login + ", Password = " + password + "]";
@@ -154,6 +171,7 @@ public class User implements UserDetails {
         this.name = newUser.getName();
         this.password = newUser.getPassword();
         this.role = newUser.getRole();
+        this.enabled = newUser.isEnabled();
         return true;
     }
 

@@ -1,5 +1,7 @@
 package springapp.dao;
 
+import org.springframework.data.repository.CrudRepository;
+import springapp.model.Role;
 import springapp.model.User;
 
 import java.util.List;
@@ -17,4 +19,5 @@ public interface UserDAO {
     public void updateUser(User user);
 
     public User findByLogin(String login);
+
 }

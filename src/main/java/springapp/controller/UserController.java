@@ -34,8 +34,8 @@ public class UserController {
 //    }
 
     @GetMapping ("/login")
-    public String authorize() {
-        return "/login";
+    public ModelAndView authorize() {
+        return new ModelAndView("login", "message", "");
     }
 
     @RequestMapping(value = "/loginFailed", method = RequestMethod.GET)
